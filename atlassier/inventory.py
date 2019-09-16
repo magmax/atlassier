@@ -1,7 +1,7 @@
-import os
 import logging
+import os
+
 import yaml
-import bitbucketopenapi as bitbucket
 
 logger = logging.getLogger(__name__)
 
@@ -29,4 +29,3 @@ class Inventory:
                     extend_me[k] = v
         else:
             extend_me += extend_by
-
