@@ -26,14 +26,27 @@ class Atlassian:
 
 
 class BitBucket:
-    def __init__(self, credentials):
-        config = bitbucket.Configuration()
+    def __init__(self, credentials, api=bitbucket):
+        config = api.Configuration()
         config.username = credentials.get("username")
         config.password = credentials.get("password")
         if "host" in credentials:
             config.host = credentials.get("host")
 
-        self._client = bitbucket.ApiClient(config)
+        self._client = api.ApiClient(config)
+        self._username = config.username
 
-    def fetch(self):
-        logger.debug("Fetching from BitBucket")
+    def fetch_repository(self, repository_name):
+        logger.debug(f"Fetching repository {repository_name} from BitBucket")
+        api = bitbucket.RepositoriesApi(self._client)
+        data = api.get_repositories_by_username_by_repo_slug(
+            self._username, repository_name
+        )
+        return {
+            "name": data["name"],
+            "scm": data["scm"],
+            "project": data["project"],
+            "description": data["description"],
+            "is_private": data["is_private"],
+            "main_branch": data["mainbranch"]["name"],
+        }
