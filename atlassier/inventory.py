@@ -13,7 +13,7 @@ class Inventory:
     def load(self):
         result = {}
         for root, dirs, files in os.walk(self.path):
-            for f in files:
+            for f in sorted(files):
                 path = os.path.join(root, f)
                 logger.debug(f"Parsing inventory file '{path}'")
                 with open(path) as fd:
