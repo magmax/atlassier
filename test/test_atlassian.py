@@ -62,10 +62,17 @@ class BitbucketTest(TestCase):
         bb = BitBucket({"username": "foo"})
         result = bb.fetch_repository("gdcr14")
         assert result == {
-            "description": "Global Day of Code Retreat 2014 Ciudad Real",
-            "is_private": False,
-            "main_branch": "master",
-            "name": "gdcr14",
-            "project": None,
-            "scm": "git",
+            "version": "0.1",
+            "kind": "repository",
+            "metadata": {
+                "name": "gdcr14",
+                "uid": "{dd848870-5738-4f46-bd9a-cdc6b5a9667a}",
+                "project": None,
+                "scm": "git",
+            },
+            "spec": {
+                "description": "Global Day of Code Retreat 2014 Ciudad Real",
+                "is_private": False,
+                "main_branch": "master",
+            },
         }
