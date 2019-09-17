@@ -27,20 +27,7 @@ BITBUCKET_GDCR14_REPOSITORY = {
         "created_on": None,
         "display_name": "Miguel Angel García",
         "has_2fa_enabled": None,
-        "links": {
-            "_self": {
-                "href": "https://api.bitbucket.org/2.0/users/%7Bd454e901-6c1b-49a7-ad8e-0b5cb95d8e8a%7D",
-                "name": None,
-            },
-            "avatar": {"href": "https://secure.gravatar.com/whatever", "name": None},
-            "followers": None,
-            "following": None,
-            "html": {
-                "href": "https://bitbucket.org/%7Bd454e901-6c1b-49a7-ad8e-0b5cb95d8e8a%7D/",
-                "name": None,
-            },
-            "repositories": None,
-        },
+        "links": {},
         "nickname": "Miguel García",
         "username": None,
         "uuid": "{d454e901-6c1b-49a7-ad8e-0b5cb95d8e8a}",
@@ -60,17 +47,17 @@ class BitbucketTest(TestCase):
     def test_fetch_gdcr14(self, method):
         method.return_value = BITBUCKET_GDCR14_REPOSITORY
         bb = BitBucket({"username": "foo"})
-        result = bb.fetch_repository("gdcr14")
-        assert result == {
+        result = bb.get_repository("gdcr14")
+        assert result.as_dict() == {
             "version": "0.1",
             "kind": "repository",
             "metadata": {
                 "name": "gdcr14",
                 "uid": "{dd848870-5738-4f46-bd9a-cdc6b5a9667a}",
-                "project": None,
-                "scm": "git",
             },
             "spec": {
+                "project": None,
+                "scm": "git",
                 "description": "Global Day of Code Retreat 2014 Ciudad Real",
                 "is_private": False,
                 "main_branch": "master",
