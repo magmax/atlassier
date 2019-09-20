@@ -14,6 +14,8 @@ class Inventory:
         result = {}
         for root, dirs, files in os.walk(self.path):
             for f in sorted(files):
+                if not f.lower().endswith((".yaml", ".yml")):
+                    continue
                 path = os.path.join(root, f)
                 logger.debug(f"Parsing inventory file '{path}'")
                 with open(path) as fd:

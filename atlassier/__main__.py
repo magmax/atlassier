@@ -2,6 +2,7 @@ import argparse
 import configparser
 import logging
 import os
+import sys
 
 from atlassier.atlassian import Atlassian
 from atlassier.inventory import Inventory
@@ -11,8 +12,8 @@ def add(args, atlassian):
     print("Adding")
 
 
-def fetch(args, atlassian):
-    atlassian.fetch()
+def get(args, atlassian):
+    atlassian.get_resource(args.resource, args.name)
 
 
 def parse_args_add(subparsers):
@@ -22,9 +23,12 @@ def parse_args_add(subparsers):
     parser.add_argument("resource", choices=["repository"], help="Type of resource")
 
 
-def parse_args_fetch(subparsers):
-    parser = subparsers.add_parser("fetch", help="Resources information")
-    parser.set_defaults(handler=fetch)
+def parse_args_get(subparsers):
+    parser = subparsers.add_parser("get", help="Resources information")
+    parser.set_defaults(handler=get)
+
+    parser.add_argument("resource", choices=["repository"], help="Type of resource")
+    parser.add_argument("name", help="Resource name")
 
 
 def parse_args():
@@ -44,9 +48,13 @@ def parse_args():
     )
     subparsers = parser.add_subparsers(help="Actions")
     parse_args_add(subparsers)
-    parse_args_fetch(subparsers)
+    parse_args_get(subparsers)
 
-    return parser.parse_args()
+    result = parser.parse_args()
+    if not hasattr(result, "handler"):
+        parser.print_help()
+        sys.exit(-1)
+    return result
 
 
 def configure_logging(verbosity):

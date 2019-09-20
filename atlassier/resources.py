@@ -17,6 +17,11 @@ class Resource:
         return {"name": self.name, "uuid": self.uid}
 
     def load_from_atlassian_object(self, data):
+        for k in vars(data):
+            v = getattr(data, k)
+            t = type(v)
+            print(f"{k} -> {t}")
+        print(dir(data))
         self.name = data["name"]
         self.uid = data.get("uuid")
 

@@ -13,9 +13,17 @@ class Atlassian:
         self.products = [BitBucket(credentials)]
         self.resources = {}
 
-    def fetch(self):
+    def get_resource(self, kind, name):
+        method_name = f"get_{kind}"
         for p in self.products:
-            p.fetch()
+            if hasattr(p, method_name):
+                method = getattr(p, method_name)
+                print(method)
+                method(name)
+
+    def get(self):
+        for p in self.products:
+            p.get()
 
     def show(self):
         for p in self.products:
@@ -39,7 +47,7 @@ class BitBucket:
 
     def get_repository(self, repository_name, owner=None):
         owner = owner or self._username
-        logger.debug(f"Fetching repository {repository_name} from BitBucket")
+        logger.debug(f"Fetching repository {owner}/{repository_name} from BitBucket")
         api = bitbucket.RepositoriesApi(self._client)
         data = api.get_repositories_by_username_by_repo_slug(owner, repository_name)
         return resources.Repository().load_from_atlassian_object(data)
